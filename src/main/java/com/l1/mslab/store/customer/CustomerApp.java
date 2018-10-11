@@ -1,12 +1,12 @@
-package com.l1.poc.microservice;
+package com.l1.mslab.store.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MicroserviceApplication {
+public class CustomerApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MicroserviceApplication.class, args);
+		SpringApplication.run(CustomerApp.class, args);
 	}
 }
