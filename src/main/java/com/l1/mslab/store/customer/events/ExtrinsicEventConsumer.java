@@ -2,7 +2,6 @@ package com.l1.mslab.store.customer.events;
 
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
