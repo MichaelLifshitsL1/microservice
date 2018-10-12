@@ -2,6 +2,7 @@ package com.l1.mslab.store.customer.events;
 
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import javax.inject.Named;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.KafkaException;
 import org.apache.kafka.common.errors.ProducerFencedException;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -50,9 +52,10 @@ public class IntrinsicEventProducer {
 		try {
 			producer.beginTransaction();
 			logger.info("publishing event = " + record);
-			producer.send(record);
+			RecordMetadata metadata = producer.send(record).get();
+			logger.info("published event metadata = " + metadata);
 			producer.commitTransaction();
-		} catch (ProducerFencedException e) {
+		} catch (ProducerFencedException | InterruptedException | ExecutionException e) {
 			producer.close();
 			logger.warning(e.getMessage());
 		} catch (KafkaException e) {

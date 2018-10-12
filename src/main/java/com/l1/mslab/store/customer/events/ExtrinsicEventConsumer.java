@@ -44,7 +44,7 @@ public class ExtrinsicEventConsumer implements Runnable {
 
 	@PostConstruct
 	private void init() {
-		kafkaProperties.put("group.id", kafkaIntrinsicTopic + "-" + UUID.randomUUID());
+		kafkaProperties.put("group.id", kafkaIntrinsicTopic + "-handler");
 		consumer = new KafkaConsumer<>(kafkaProperties, new StringDeserializer(), new EventDeserializer());
 	}
 

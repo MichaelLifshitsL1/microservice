@@ -2,6 +2,7 @@ package com.l1.mslab.store.customer.events;
 
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -40,7 +41,7 @@ public class IntrinsicEventConsumer implements Runnable {
 
 	@PostConstruct
 	private void init() {
-		kafkaProperties.put("group.id", kafkaIntrinsicTopic + "-handler");
+		kafkaProperties.put("group.id", kafkaIntrinsicTopic + "-" + UUID.randomUUID());
 		consumer = new KafkaConsumer<>(kafkaProperties, new StringDeserializer(), new EventDeserializer());
 	}
 
