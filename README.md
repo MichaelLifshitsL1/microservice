@@ -20,7 +20,7 @@ Add lines
 to /etc/hosts
 
 > cd .../microservices-course
-> docker-compose up -d
+> docker-compose -f docker-compose-confluent.yml up -d
 
 ### Verify:
 > docker-compose ps
