@@ -27,6 +27,18 @@ to /etc/hosts
 ### Stop:
 > docker-compose down  --remove-orphans
 
+## localstack
+
+### Run:
+
+> cd .../microservices-course
+> docker-compose -f docker-compose-localstack.yml up -d
+
+### Create stream
+
+> aws --endpoint-url=http://localhost:4568 kinesis create-stream --stream-name test --shard-count 1
+
+> aws --endpoint-url=http://localhost:4568 kinesis list-streams
 
 
 ## Ref
