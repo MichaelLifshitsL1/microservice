@@ -23,9 +23,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.common.eventbus.EventBus;
 import com.l1.mslab.store.customer.domain.Customer;
-import com.l1.mslab.store.customer.events.ExtrinsicEventConsumer;
-import com.l1.mslab.store.customer.events.IntrinsicEventConsumer;
-import com.l1.mslab.store.customer.events.IntrinsicEventProducer;
+import com.l1.mslab.store.customer.events.ExtrinsicEventConsumerKafkaImpl;
+import com.l1.mslab.store.customer.events.IntrinsicEventConsumerKafkaImpl;
+import com.l1.mslab.store.customer.events.IntrinsicEventProducerKafkaImpl;
 import com.l1.mslab.store.customer.events.customer.CustomerCreated;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,13 +33,13 @@ import com.l1.mslab.store.customer.events.customer.CustomerCreated;
 public class MessageConsumerTest {
 
 	@MockBean
-	IntrinsicEventConsumer intrinsicEventConsumer;
+	IntrinsicEventConsumerKafkaImpl intrinsicEventConsumer;
 
 	@MockBean
-	IntrinsicEventProducer intrinsicEventProducer;
+	IntrinsicEventProducerKafkaImpl intrinsicEventProducer;
 
 	@MockBean
-	ExtrinsicEventConsumer extrinsicEventProducer;
+	ExtrinsicEventConsumerKafkaImpl extrinsicEventProducer;
 
 	@Inject
 	EventBus eventBus;

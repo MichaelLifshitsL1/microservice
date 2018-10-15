@@ -13,7 +13,11 @@ import org.springframework.core.task.TaskExecutor;
 
 import com.google.common.eventbus.EventBus;
 import com.l1.mslab.store.customer.events.ExtrinsicEventConsumer;
+import com.l1.mslab.store.customer.events.ExtrinsicEventConsumerKafkaImpl;
 import com.l1.mslab.store.customer.events.IntrinsicEventConsumer;
+import com.l1.mslab.store.customer.events.IntrinsicEventConsumerKafkaImpl;
+import com.l1.mslab.store.customer.events.IntrinsicEventProducer;
+import com.l1.mslab.store.customer.events.IntrinsicEventProducerKafkaImpl;
 
 @Configuration
 public class SpringConfig {
@@ -37,6 +41,21 @@ public class SpringConfig {
 		return props;
 	}
 
+	@Bean
+	public ExtrinsicEventConsumer extrinsicEventConsumer() {
+		return new ExtrinsicEventConsumerKafkaImpl();
+	}
+	
+	@Bean
+	public IntrinsicEventConsumer intrinsicEventConsumer() {
+		return new IntrinsicEventConsumerKafkaImpl();
+	}
+	
+	@Bean
+	public IntrinsicEventProducer intrinsicEventProducer() {
+		return new IntrinsicEventProducerKafkaImpl();
+	}
+	
 	@Bean
 	public Logger exposeLogger(InjectionPoint injectionPoint) {
 		return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
