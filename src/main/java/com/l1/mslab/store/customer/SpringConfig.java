@@ -14,16 +14,22 @@ import org.springframework.core.task.TaskExecutor;
 import com.google.common.eventbus.EventBus;
 import com.l1.mslab.store.customer.events.ExtrinsicEventConsumer;
 import com.l1.mslab.store.customer.events.ExtrinsicEventConsumerKafkaImpl;
+import com.l1.mslab.store.customer.events.ExtrinsicEventConsumerKinesisImpl;
 import com.l1.mslab.store.customer.events.IntrinsicEventConsumer;
 import com.l1.mslab.store.customer.events.IntrinsicEventConsumerKafkaImpl;
+import com.l1.mslab.store.customer.events.IntrinsicEventConsumerKinesisImpl;
 import com.l1.mslab.store.customer.events.IntrinsicEventProducer;
 import com.l1.mslab.store.customer.events.IntrinsicEventProducerKafkaImpl;
+import com.l1.mslab.store.customer.events.IntrinsicEventProducerKinesisImpl;
 
 @Configuration
 public class SpringConfig {
 
 	@Value("${kafka.bootstrap.servers}")
 	private String kafkaBootstrapServers;
+
+	@Value("${mslab.store.messaging}")
+	private StoreMessagingType storeMessaging;
 
 	@Bean(name = "producerProperties")
 	public Properties producerProperties() {
@@ -43,19 +49,40 @@ public class SpringConfig {
 
 	@Bean
 	public ExtrinsicEventConsumer extrinsicEventConsumer() {
-		return new ExtrinsicEventConsumerKafkaImpl();
+		switch (storeMessaging) {
+		case kinesis:
+			return new ExtrinsicEventConsumerKinesisImpl();
+		case kafka:
+			return new ExtrinsicEventConsumerKafkaImpl();
+		default:
+			throw new Error("mslab.store.messaging type can't be found");
+		}
 	}
-	
+
 	@Bean
 	public IntrinsicEventConsumer intrinsicEventConsumer() {
-		return new IntrinsicEventConsumerKafkaImpl();
+		switch (storeMessaging) {
+		case kinesis:
+			return new IntrinsicEventConsumerKinesisImpl();
+		case kafka:
+			return new IntrinsicEventConsumerKafkaImpl();
+		default:
+			throw new Error("mslab.store.messaging type can't be found");
+		}
 	}
-	
+
 	@Bean
 	public IntrinsicEventProducer intrinsicEventProducer() {
-		return new IntrinsicEventProducerKafkaImpl();
+		switch (storeMessaging) {
+		case kinesis:
+			return new IntrinsicEventProducerKinesisImpl();
+		case kafka:
+			return new IntrinsicEventProducerKafkaImpl();
+		default:
+			throw new Error("mslab.store.messaging type can't be found");
+		}
 	}
-	
+
 	@Bean
 	public Logger exposeLogger(InjectionPoint injectionPoint) {
 		return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());

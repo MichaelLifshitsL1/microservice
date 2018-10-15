@@ -40,18 +40,14 @@ public class IntrinsicEventProducerKafkaImpl implements IntrinsicEventProducer {
 		producer.initTransactions();
 	}
 
-	public void publish(Event event) {
+	public void publish(Event... events) {
 		// "...-key" should prescribe Kafka to append all the messages to the same
 		// partition, guaranteeing fixed order. This is good for mutable entities only.
 		// This approach will guaranty same state of the db on replaying sourced events.
 		// Immutable entities should be distributed across all the partitions.
-		final ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaIntrinsicTopic,
-				kafkaIntrinsicTopic + "-key", event);
 		try {
 			producer.beginTransaction();
-			logger.info("publishing event = " + record);
-			RecordMetadata metadata = producer.send(record).get();
-			logger.info("published event metadata = " + metadata);
+			send(events);
 			producer.commitTransaction();
 		} catch (ProducerFencedException | InterruptedException | ExecutionException e) {
 			producer.close();
@@ -59,6 +55,16 @@ public class IntrinsicEventProducerKafkaImpl implements IntrinsicEventProducer {
 		} catch (KafkaException e) {
 			producer.abortTransaction();
 			logger.warning("Failed to send Kafka event - " + e.getMessage());
+		}
+	}
+
+	private void send(Event... events) throws InterruptedException, ExecutionException {
+		for (final Event event : events) {
+			final ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaIntrinsicTopic,
+					kafkaIntrinsicTopic + "-key", event);
+			logger.info("publishing event = " + record);
+			RecordMetadata metadata = producer.send(record).get();
+			logger.info("published event metadata = " + metadata);
 		}
 	}
 

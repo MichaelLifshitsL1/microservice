@@ -43,6 +43,7 @@ public class IntrinsicEventConsumerKafkaImpl implements IntrinsicEventConsumer {
 		consumer = new KafkaConsumer<>(kafkaProperties, new StringDeserializer(), new EventDeserializer());
 	}
 
+	
 	@Override
 	public void run() {
 		try {
