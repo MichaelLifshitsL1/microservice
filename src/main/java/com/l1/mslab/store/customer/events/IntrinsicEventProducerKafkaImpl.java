@@ -51,10 +51,10 @@ public class IntrinsicEventProducerKafkaImpl implements IntrinsicEventProducer {
 			producer.commitTransaction();
 		} catch (ProducerFencedException | InterruptedException | ExecutionException e) {
 			producer.close();
-			logger.warning(e.getMessage());
+			logger.severe(e.getMessage());
 		} catch (KafkaException e) {
 			producer.abortTransaction();
-			logger.warning("Failed to send Kafka event - " + e.getMessage());
+			logger.severe("Failed to send Kafka events - " + e.getMessage());
 		}
 	}
 
