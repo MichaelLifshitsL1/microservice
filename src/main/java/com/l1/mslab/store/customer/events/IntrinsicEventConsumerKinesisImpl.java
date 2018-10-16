@@ -75,9 +75,8 @@ public class IntrinsicEventConsumerKinesisImpl implements IntrinsicEventConsumer
 				String json = StandardCharsets.UTF_8.decode(record.getData()).toString();
 				logger.info("receiving intrinsic event = " + json);
 				ObjectMapper mapper = new ObjectMapper();
-				Event event;
 				try {
-					event = mapper.findAndRegisterModules().readValue(json, Event.class);
+					Event event = mapper.findAndRegisterModules().readValue(json, Event.class);
 					eventBus.post(event);
 				} catch (IOException e) {
 					throw new Error(e);
